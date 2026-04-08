@@ -13,7 +13,7 @@ Users can register as either a **User** (browse and book events) or an **Organiz
 
 ## Tech Stack
 
-C#, PostgreSQL, Entity Framework Core, JWT Bearer tokens
+C#, PostgreSQL, Entity Framework Core, JWT
 
 ## Project Structure
 
