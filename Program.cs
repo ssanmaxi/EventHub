@@ -9,8 +9,12 @@ builder.Services.AddOpenApi();
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddJwtAuth(builder.Configuration);
 builder.Services.AddApplication();
-builder.Services.AddCors(o => o.AddPolicy("CorsPolicy", p => p.WithOrigins("http://127.0.0.1:5500").AllowAnyMethod().AllowAnyHeader()));
+var origins = builder.Configuration.GetSection("Cors:Origins").Get<string[]>();
 
+builder.Services.AddCors(o => o.AddPolicy("CorsPolicy", p =>
+    p.WithOrigins(origins)
+        .AllowAnyMethod()
+        .AllowAnyHeader()));
 
 var app = builder.Build();
 
