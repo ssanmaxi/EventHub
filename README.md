@@ -25,9 +25,3 @@ EventHub/
 ├── Presentation/      # Controllers (Events, Bookings, Auth)
 └── Migrations/
 ```
-
-
-
-## License
-
-This project is for educational purposes.
