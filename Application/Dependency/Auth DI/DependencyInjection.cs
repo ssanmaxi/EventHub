@@ -1,6 +1,9 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using EventPlanning.Application.DTO.Auth_DTO;
+using FluentValidation;
+
 namespace EventPlanning.Application.Dependency.Auth_DI;
 
 public static class DependencyInjection
@@ -27,6 +30,7 @@ public static class DependencyInjection
             });
 
         services.AddAuthorization();
+        
         return services;
     }
 }

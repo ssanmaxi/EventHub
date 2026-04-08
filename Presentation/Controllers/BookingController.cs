@@ -3,6 +3,7 @@ using EventBooking.Domain.Enums;
 using EventPlanning.Application.DTO.Bookings_DTO;
 using Microsoft.AspNetCore.Mvc;
 using EventPlanning.Application.DTO.Events_DTO;
+using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
 
 namespace EventPlanning.Presentation.Controllers;
@@ -12,10 +13,12 @@ namespace EventPlanning.Presentation.Controllers;
 public class BookingController : ControllerBase
 {
     private readonly IBookingService _bs;
+    private readonly IValidator<BookingRequest> _iv;
 
-    public BookingController(IBookingService bs)
+    public BookingController(IBookingService bs, IValidator<BookingRequest> iv)
     {
         _bs = bs;
+        _iv = iv;
     }
 
     [Authorize(Roles = "User")]
@@ -31,6 +34,9 @@ public class BookingController : ControllerBase
     [HttpPost()]
     public async Task<IActionResult> Book(BookingRequest book)
     {
+        var result = await _iv.ValidateAsync(book);
+        if (!result.IsValid) return BadRequest(result.Errors);
+        
         var booking = await _bs.BookEvent(book.UserId, book.EventId);
 
         return CreatedAtAction(nameof(GetMyBookings), new{userId = booking.UserId}, booking);

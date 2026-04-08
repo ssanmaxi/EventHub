@@ -2,6 +2,7 @@ using EventBooking.Application.Interfaces;
 using EventBooking.Domain.Enums;
 using Microsoft.AspNetCore.Mvc;
 using EventPlanning.Application.DTO.Events_DTO;
+using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
 
 namespace EventPlanning.Presentation.Controllers;
@@ -11,10 +12,12 @@ namespace EventPlanning.Presentation.Controllers;
 public class EventsController :ControllerBase
 {
     private readonly IEventService _es;
+    private readonly IValidator<EventRequest> _iv;
 
-    public EventsController(IEventService es)
+    public EventsController(IEventService es, IValidator<EventRequest> iv)
     {
         _es = es;
+        _iv = iv;
     }
     
     [AllowAnonymous]
@@ -39,9 +42,12 @@ public class EventsController :ControllerBase
     [HttpPost("create")]
     public async Task<IActionResult> CreateEvent(EventRequest evq)
     {
+        var result = await _iv.ValidateAsync(evq);
+        if (!result.IsValid) return BadRequest(result.Errors);
+        
         var ev = await _es.CreateEvent(evq.OrganizerId, evq.Name, evq.Description, 
             DateTime.SpecifyKind(evq.Date, DateTimeKind.Utc), evq.Place, evq.MaxSeats);
-
+        
         return CreatedAtAction(nameof(GetEventById), new{id = ev.Id}, ev);
     }
 
