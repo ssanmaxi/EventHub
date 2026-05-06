@@ -4,16 +4,19 @@ EventHub is a REST API for publishing and booking events, built with Domain-Driv
 
 Users can register as either a **User** (browse and book events) or an **Organizer** (create, manage, and publish events with photos).
 
+Built with Clean Architecture: Domain layer has entities, Application layer has DTOs & service interfaces, Infrastructure layer has EF Core and interface implementations, and Presentation is the API layer.
+
 ## Features
 
 - JWT authentication with role-based authorization
 - Full event lifecycle: create, update, cancel, upload photos
-- Booking system with automatic waitlist promotion on cancellation
 - Photo upload support for events
+- Automatic waitlist promotion upon cancellation
 
 ## Tech Stack
 
-C#, PostgreSQL, Entity Framework Core, JWT
+C#, PostgreSQL, Entity Framework Core, JWT, BCrypt, FluentValidation
+
 
 ## Project Structure
 
